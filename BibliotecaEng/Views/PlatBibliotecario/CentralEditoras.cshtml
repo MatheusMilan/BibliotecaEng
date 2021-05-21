@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Inicio - Engenharia II</title>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="~/css/Home.css" rel="stylesheet" />
+    <link href="~/css/CssPadrao.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="MenuSuperior">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+            <a class="navbar-brand Titulo" href="#">Biblioteca Fisic Flix</a>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/PlatBibliotecario/Index">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PlatBibliotecario/ControleFluxoBiblioteca">Fluxo Bibliotecario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PlatBibliotecario/Financeiro">Financeiro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PlatBibliotecario/CentralAssinantes">Central Assinantes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PlatBibliotecario/CentralLivros">Central Livros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PlatBibliotecario/CentralAutores">Central Autores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/PlatBibliotecario/CentralEditoras">Central Editoras</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="ConteudoPagina">
+        <div class="table" style="width:50%; margin:auto;">
+            <label> Digite o nome do Editora ou ID</label> <br />
+            <input type="text" id="BuscaEditora" placeholder="Buscar" /> <button class="btn-primary" onclick="Buscar()">Buscar</button>
+            <button class="btn-primary" onclick="AdicionarEditora()">Adicionar Nova Editora</button>
+
+            <div id="AdicionarEditora">
+
+            </div>
+
+            <table class="table table-light scroll" id="tabelaEditora">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">CNPJ</th>
+                        <th scope="col">Contato</th>
+                        <th scope="col">Logradouro</th>
+                        <th scope="col">Numero</th>
+                        <th scope="col">Bairro</th>
+                        <th scope="col">Cep</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">Estado</th>
+
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ while (ViewBag.Editoras.Read())
+                        {
+                            <tr>
+                                <!-- Informações Editora-->
+                                <th scope="row">@ViewBag.Editoras.GetString("edi_id")</th>
+                                <td id="Nome @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_nome")</td>
+                                <td id="Desc @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_desc")</td>
+                                <td id="CNPJ @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_cnpj")</td>
+                                <td id="Contato @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_fone")</td>
+
+                                <!-- Informações Endereço Editora-->
+                                <td id="IDEndereco @ViewBag.Editoras.GetString("end_id")" hidden>@ViewBag.Editoras.GetString("end_id")</td>
+                                <td id="Logradouro @ViewBag.Editoras.GetString("end_id")">@ViewBag.Editoras.GetString("end_logradouro")</td>
+                                <td id="Numero @ViewBag.Editoras.GetString("end_id")">@ViewBag.Editoras.GetString("end_numero")</td>
+                                <td id="Bairro @ViewBag.Editoras.GetString("end_id")">@ViewBag.Editoras.GetString("end_bairro")</td>
+                                <td id="CEP @ViewBag.Editoras.GetString("end_id")">@ViewBag.Editoras.GetString("end_cep")</td>
+                                <td id="Cidade @ViewBag.Editoras.GetString("end_id")">@ViewBag.Editoras.GetString("end_cidade")</td>
+                                <td id="Estado @ViewBag.Editoras.GetString("end_id")">@ViewBag.Editoras.GetString("end_estado")</td>
+
+                                <td><button id="@ViewBag.Editoras.GetString("edi_id")" onclick="CarregarAlterar(this.id)">Alterar</button></td>
+                                <td><button id="@ViewBag.Editoras.GetString("edi_id")">Deletar</button></td>
+                            </tr>
+                            <tr id="AcaoID @ViewBag.Editoras.GetString("edi_id")">
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="Rodape">
+        <footer class="fixarRodape">
+            <hr />
+            <p> @DateTime.Now.Year - Fisic Flix - Engenharia II</p>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+    <script src="~/Functions/PlatBibliotecario/CentralEditoras.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+</body>
+</html>

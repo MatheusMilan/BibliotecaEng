@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Inicio - Engenharia II</title>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="~/css/Home.css" rel="stylesheet" />
+    <link href="~/css/Login.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="MenuSuperior">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+            <a class="navbar-brand Titulo" href="#">Biblioteca Fisic Flix</a>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/Index">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/SobreNos">Sobre Nós</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/Contato">Contato</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/Login">Acesso</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="ConteudoPagina" id="ConteudoPagina">
+        <img src="~/Imagens/Cadeado.png" />
+        <div class="form-group">
+            <input type="text" id="UsuarioNome" class="form-control" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input type="password" id="UsuarioSenha" class="form-control" placeholder="Password">
+        </div>
+        <button onclick="Acessar()" class="btn btn-block btn-primary btn-float m-t-25">Sign In</button>
+    </div>
+
+    <div id="Rodape">
+        <footer class="fixarRodape">
+            <hr />
+            <p> @DateTime.Now.Year - Fisic Flix - Engenharia II</p>
+        </footer>
+    </div>
+
+    <script src="~/Functions/Home/ControleAcesso.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+</html>

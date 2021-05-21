@@ -1,0 +1,13 @@
+﻿body{
+    color:white;
+}
+
+label{
+    color:white;
+}
+
+.scroll {
+    max-width: 50%;
+    max-height:60%;
+    overflow: scroll
+}
