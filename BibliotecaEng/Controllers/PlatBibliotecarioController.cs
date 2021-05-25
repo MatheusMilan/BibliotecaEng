@@ -209,6 +209,7 @@ namespace BibliotecaEng.Views.PlatBibliotecario
                 throw;
             }
 
+            Connect.Fechar();
             return Json(new
             {
                 Ok = ok,
@@ -216,13 +217,104 @@ namespace BibliotecaEng.Views.PlatBibliotecario
             });
         }
 
-        public IActionResult AlteracaoEditora()
+        public IActionResult AlterarEditora(string ID,string Nome, string Desc, string CNPJ, string Contato,string IDEndereco ,string Logradouro, string Numero, string Bairro, string CEP, string Cidade, string Estado)
         {
-            bool ok = false;
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+            int Affected=0;
+            try
+            {
+                Connect.Abrir();
+                sql= "update editora set edi_nome='#1',edi_desc='#2',edi_cnpj='#3',edi_fone='#4' where edi_id=#5";
+                sql = sql.Replace("#1", Nome);
+                sql = sql.Replace("#2", Desc);
+                sql = sql.Replace("#3", CNPJ);
+                sql = sql.Replace("#4", Contato);
+                sql = sql.Replace("#5", ID.ToString());
+
+                Affected = Connect.ExecutarNonQueryAffected(sql);
+                if (Affected > 0)
+                {
+                    Affected = 0;
+                    sql = "update endereco set end_logradouro='#1',end_numero='#2',end_bairro='#3',end_cep='#4',end_cidade='#5',end_estado='#6' where end_id=#7";
+                    sql = sql.Replace("#1", Logradouro);
+                    sql = sql.Replace("#2", Numero);
+                    sql = sql.Replace("#3", Bairro);
+                    sql = sql.Replace("#4", CEP);
+                    sql = sql.Replace("#5", Cidade);
+                    sql = sql.Replace("#6", Estado);
+                    sql = sql.Replace("#7", IDEndereco.ToString());
+                    Affected = Connect.ExecutarNonQueryAffected(sql);
+                    if(Affected>0)
+                    {
+                        msg = "Alteração Concluida";
+                    }
+                    else
+                    {
+                        ok = false;
+                        msg = "Erro ao Atualizar Endereço Editora";
+                    }
+                }
+                else
+                {
+                    ok = false;
+                    msg = "Erro ao Atualizar Editora";
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            Connect.Fechar();
+            return Json(new
+            {
+                Ok = ok,
+                msg = msg
+            });
+        }
+
+        public IActionResult ApagarEditora(string ID,string IDEndereco)
+        {
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+
+            try
+            {
+                Connect.Abrir();
+                sql = "delete from editora where edi_id="+ID;
+                if(Connect.ExecutarNonQueryAffected(sql)>0)
+                {
+                    sql = "delete from endereco where end_id=" + IDEndereco;
+                    if (Connect.ExecutarNonQueryAffected(sql) > 0)
+                        msg = "Registro Removido";
+                    else
+                    {
+                        ok = false;
+                        msg = "Erro ao Apagar o Registro";
+                    }
+                        
+                }
+                else
+                {
+                    ok = false;
+                    msg = "Erro ao Apagar Editora";
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
             return Json(new
             {
-                Ok = ok
+                Ok = ok,
+                msg=msg
             });
         }
         #endregion

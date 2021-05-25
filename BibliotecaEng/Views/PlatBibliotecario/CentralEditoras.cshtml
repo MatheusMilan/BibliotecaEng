@@ -40,7 +40,7 @@
     </div>
 
     <div id="ConteudoPagina">
-        <div class="table" style="width:50%; margin:auto;">
+        <div class="table" style="width:50%; max-width:100%; margin:auto;">
             <label> Digite o nome do Editora ou ID</label> <br />
             <input type="text" id="BuscaEditora" placeholder="Buscar" /> <button class="btn-primary" onclick="Buscar()">Buscar</button>
             <button class="btn-primary" onclick="AdicionarEditora()">Adicionar Nova Editora</button>
@@ -70,26 +70,26 @@
                 <tbody>
                     @{ while (ViewBag.Editoras.Read())
                         {
-                            <tr>
-                                <!-- Informações Editora-->
-                                <th scope="row">@ViewBag.Editoras.GetString("edi_id")</th>
-                                <td id="Nome @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_nome")</td>
-                                <td id="Desc @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_desc")</td>
-                                <td id="CNPJ @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_cnpj")</td>
-                                <td id="Contato @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_fone")</td>
+                                        <tr>
+                                            <!-- Informações Editora-->
+                                            <th scope="row">@ViewBag.Editoras.GetString("edi_id")</th>
+                                            <td id="Nome @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_nome")</td>
+                                            <td id="Desc @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_desc")</td>
+                                            <td id="CNPJ @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_cnpj")</td>
+                                            <td id="Contato @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("edi_fone")</td>
 
-                                <!-- Informações Endereço Editora-->
-                                <td id="IDEndereco @ViewBag.Editoras.GetString("edi_id")" hidden>@ViewBag.Editoras.GetString("end_id")</td>
-                                <td id="Logradouro @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_logradouro")</td>
-                                <td id="Numero @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_numero")</td>
-                                <td id="Bairro @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_bairro")</td>
-                                <td id="CEP @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_cep")</td>
-                                <td id="Cidade @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_cidade")</td>
-                                <td id="Estado @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_estado")</td>
+                                            <!-- Informações Endereço Editora-->
+                                            <td id="IDEndereco @ViewBag.Editoras.GetString("edi_id")" hidden>@ViewBag.Editoras.GetString("end_id")</td>
+                                            <td id="Logradouro @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_logradouro")</td>
+                                            <td id="Numero @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_numero")</td>
+                                            <td id="Bairro @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_bairro")</td>
+                                            <td id="CEP @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_cep")</td>
+                                            <td id="Estado @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_estado")</td>
+                                            <td id="Cidade @ViewBag.Editoras.GetString("edi_id")">@ViewBag.Editoras.GetString("end_cidade")</td>
 
-                                <td><button id="@ViewBag.Editoras.GetString("edi_id")" onclick="CarregarAlterar(this.id)">Alterar</button></td>
-                                <td><button id="@ViewBag.Editoras.GetString("edi_id")">Deletar</button></td>
-                            </tr>
+                                            <td><button id="@ViewBag.Editoras.GetString("edi_id")" onclick="CarregarAlterar(this.id)">Alterar</button></td>
+                                            <td><button id="@ViewBag.Editoras.GetString("edi_id")" onclick="DeletarEditora(this.id)">Deletar</button></td>
+                                        </tr>
                             <tr id="AcaoID @ViewBag.Editoras.GetString("edi_id")">
                             </tr>
                         }
