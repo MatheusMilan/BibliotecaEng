@@ -100,7 +100,7 @@ function CarregarAlterar(id) {
     Carregamento = Carregamento + '<th> <input type="text" id="AltBairro ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltCEP ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltCidade ' + id + '"" value="" /> </th>';
-    Carregamento = Carregamento + '<select OnChange="CarregaCidades()" class="form-control" type="text" id="AltEstado '+ id + '" value=""> </select> </br>';
+    Carregamento = Carregamento + '<select OnChange="CarregaCidades()" class="form-control" type="text" id="AltEstado'+ id + '" value=""> </select> </br>';
     Carregamento = Carregamento + '<th> <button id="' + id + '" onclick="Cancelar(this.id)"> Cancelar </button> </th>' + '<th> <button id="' + id +'"onclick="AlterarSalvar(this.id)"> Salvar </button> </th>';
 
     document.getElementById("AcaoID " + id).innerHTML = Carregamento;
@@ -113,18 +113,21 @@ function CarregarAlterar(id) {
     document.getElementById("AltNumero " + id).value = document.getElementById("Numero " + id).innerHTML;
     document.getElementById("AltBairro " + id).value = document.getElementById("Bairro " + id).innerHTML;
     document.getElementById("AltCEP " + id).value = document.getElementById("CEP " + id).innerHTML;
-    document.getElementById("AltEstado " + id).value = document.getElementById("Estado " + id).innerHTML;
+    document.getElementById("AltEstado" + id).value = document.getElementById("Estado " + id).innerHTML;
     document.getElementById("AltCidade " + id).value = document.getElementById("Cidade " + id).innerHTML;
 
-
+    var estadoValor = document.getElementById("Estado " + id).innerHTML;
 
     $.getJSON('/estados_cidades.json', function (data) {
 
         var options = '<option value="">escolha um estado</option>';
         $.each(data, function (key, val) {
-            options += '<option value="' + val.nome + '">' + val.nome + '</option>';
+            options += '<option value="' + val.nome + '"';
+            if (val.nome === estadoValor)
+                options += 'selected';
+            options += '>' + val.nome + '</option>';
         });
-        var NameDiv = "#AltEstado " + id;
+        var NameDiv = "#AltEstado" + id;
         $(NameDiv).html(options);
     });
 
