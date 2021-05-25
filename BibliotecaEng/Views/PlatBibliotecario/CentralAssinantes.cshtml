@@ -56,20 +56,37 @@
                         <th scope="col">Nome</th>
                         <th scope="col">CPF</th>
                         <th scope="col">RG</th>
+                        <th scope="col">Logradouro</th>
+                        <th scope="col">Numero</th>
+                        <th scope="col">Bairro</th>
+                        <th scope="col">Cep</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">Estado</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @{ while (ViewBag.Assinantes.Read())
                         {
-                            <tr>
-                                <th scope="row">@ViewBag.Assinantes.GetString("ass_id")</th>
-                                <td>@ViewBag.Assinantes.GetString("ass_nome")</td>
-                                <td>@ViewBag.Assinantes.GetString("ass_cpf")</td>
-                                <td>@ViewBag.Assinantes.GetString("ass_rg")</td>
-                                <td><button id="@ViewBag.Assinantes.GetString("ass_id")" onclick="CarregarAlterar(this.id)">Alterar</button></td>
-                                <td><button id="@ViewBag.Assinantes.GetString("ass_id")">Deletar</button></td>
-                            </tr>
+                                        <tr>
+                                            <!-- Informações Assinante-->
+                                            <th scope="row">@ViewBag.Assinantes.GetString("ass_id")</th>
+                                            <td id="Nome @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("ass_nome")</td>
+                                            <td id="CPF @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("ass_cpf")</td>
+                                            <td id="RG @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("ass_rg")</td>
+
+                                            <!-- Informações Endereço Editora-->
+                                            <td id="IDEndereco @ViewBag.Assinantes.GetString("ass_id")" hidden>@ViewBag.Assinantes.GetString("end_id")</td>
+                                            <td id="Logradouro @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("end_logradouro")</td>
+                                            <td id="Numero @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("end_numero")</td>
+                                            <td id="Bairro @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("end_bairro")</td>
+                                            <td id="CEP @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("end_cep")</td>
+                                            <td id="Cidade @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("end_cidade")</td>
+                                            <td id="Estado @ViewBag.Assinantes.GetString("ass_id")">@ViewBag.Assinantes.GetString("end_estado")</td>
+
+                                            <td><button id="@ViewBag.Assinantes.GetString("ass_id")" onclick="CarregarAlterar(this.id)">Alterar</button></td>
+                                            <td><button id="@ViewBag.Assinantes.GetString("ass_id")" onclick="DeletarAssinante(this.id)">Deletar</button></td>
+                                        </tr>
                             <tr id="AcaoID @ViewBag.Assinantes.GetString("ass_id")">
                             </tr>
                         }
@@ -87,8 +104,13 @@
         </footer>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
     <script src="~/Functions/PlatBibliotecario/CentralAssinantes.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
 </body>
 </html>

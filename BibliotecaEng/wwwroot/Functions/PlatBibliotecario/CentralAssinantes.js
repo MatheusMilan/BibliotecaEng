@@ -1,39 +1,174 @@
 ﻿function AdicionarAssinante() {
-    document.getElementById("AdicionarAssinante").innerHTML = '<label>Informacoes Perfil</label> </br> <label>Nome Assinante</label> <input class="form-control" type="text" id="AddNome" value="" /> </br> <label>CPF Assinante</label> <input class="form-control" type="text" id="AddCPF" value="" /> </br> <label>RG Assinante</label>  <input class="form-control" type="text" name="AddRG" value="" /> </br> <label>Login Assinante</label> <input class="form-control" type="text" id="AddLogin" value="" /> </br> <label>Senha Assinante</label> <input class="form-control" type="text" id="AddSenha" value="" /> </br> <label>Logradouro Assinante</label> <input class="form-control" type="text" id="AddLogradouro" value="" /> </br> <label>Numero Assinante</label> <input class="form-control" type="text" id="AddNumero" value="" /> </br> <label>Bairro Assinante</label> <input class="form-control" type="text" id="AddBairro" value="" /> </br> <label>CEP Assinante</label> <input class="form-control" type="text" id="AddCEP" value="" /> </br> <label>Cidade Assinante</label> <input class="form-control" type="text" id="AddCidade" value="" /> </br> <label>Estado Assinante</label> <input class="form-control" type="text" id="AddEstado" value="" /> </br> <button onclick="CancelarAddAssinante()"> Cancelar </button>' + ' <button onclick="SalvarNovo()"> Salvar </button>';
+    document.getElementById("tabelaAssinante").hidden = true;
+    var Carregamento = "";
+    Carregamento = Carregamento + "<div class='row'>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>Nome Assinante</label> <input class="form-control" type="text" id="AddNome" value="" /> </br>';
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>CPF Assinante</label>  <input class="form-control" type="text" id="AddCPF" ' + 'onkeypress="$(this).mask(' + "'000.000.000-00'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "<div class='row'>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>RG Assinante</label>  <input class="form-control" type="text" id="AddRG" ' + ' onkeypress="$(this).mask(' + "'00.000.000-0'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "<div class='row'>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>Login Assinante</label>  <input class="form-control" type="text" id="AddLogin" value="" /> </br> ';
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>Senha Assinante</label>  <input class="form-control" type="text" id="AddSenha" value="" /> </br> ';
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + '<label>Logradouro Assinante</label> <input class="form-control" type="text" id="AddLogradouro" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Numero Assinante</label> <input class="form-control" type="text" id="AddNumero" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Bairro Assinante</label> <input class="form-control" type="text" id="AddBairro" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>CEP Assinante</label> <input class="form-control" type="text" id="AddCEP" ' + ' onkeypress = "$(this).mask(' + "'00.000-000'" + ')"' + ' value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Estado Assinante</label> <select OnChange="CarregaCidades()" class="form-control" type="text" id="AddEstado" value=""> </select> </br>';
+    Carregamento = Carregamento + '<label>Cidade Assinante</label> <select class="form-control" type="text" id="AddCidade" value="" /> </select>';
+    Carregamento = Carregamento + '</br> <button onclick="CancelarAddAssinante()"> Cancelar </button>' + ' <button onclick="SalvarNovo()"> Salvar </button>';
+
+    $.getJSON('/estados_cidades.json', function (data) {
+
+        var options = '<option value="">escolha um estado</option>';
+        $.each(data, function (key, val) {
+            options += '<option value="' + val.nome + '">' + val.nome + '</option>';
+        });
+        $("#AddEstado").html(options);
+    });
+
+    document.getElementById("AdicionarAssinante").innerHTML = Carregamento;
+    document.getElementById("AdicionarAssinante").style.marginBottom = "10%";
+}
+
+function CarregaCidades() {
+    $.getJSON('/estados_cidades.json', function (data) {
+        var options_cidades = '';
+        var str = "";
+
+        $("#AddEstado option:selected").each(function () {
+            str += $(this).text();
+        });
+
+        $.each(data, function (key, val) {
+            if (val.nome == str) {
+                $.each(val.cidades, function (key_city, val_city) {
+                    options_cidades += '<option value="' + val_city + '">' + val_city + '</option>';
+                });
+            }
+        });
+
+        $("#AddCidade").html(options_cidades);
+    });
 }
 
 function SalvarNovo() {
+    var Dados = {
+        Nome: document.getElementById("AddNome").value,
+        CPF: document.getElementById("AddCPF").value,
+        RG: document.getElementById("AddRG").value,
+        Login: document.getElementById("AddLogin").value,
+        Senha: document.getElementById("AddSenha").value,
+        Logradouro: document.getElementById("AddLogradouro").value,
+        Numero: document.getElementById("AddNumero").value,
+        Bairro: document.getElementById("AddBairro").value,
+        CEP: document.getElementById("AddCEP").value,
+        Cidade: document.getElementById("AddCidade").value,
+        Estado: document.getElementById("AddEstado").value
+    }
 
-    var Logradouro = document.getElementById("AddLogradouro").value;
-    var Numero = document.getElementById("AddNumero").value;
-    var Bairro = document.getElementById("AddBairro").value;
-    var CEP = document.getElementById("AddCEP").value;
-    var Cidade = document.getElementById("AddCidade").value;
-    var Estado = document.getElementById("AddEstado").value;
+    $.get('/PlatBibliotecario/CadastroAssinante', Dados).done(function (result) {
+        alert(result.msg);
+        document.location.reload(true);
+    }).fail(function () {
+        Alert('erro', 'Ocorreu um erro');
+    });
+    document.getElementById("AdicionarAssinante").style.marginBottom = "0%";
 }
+
 function CancelarAddAssinante() {
+    document.getElementById("tabelaAssinante").hidden = false;
     document.getElementById("AdicionarAssinante").innerHTML = "";
-}
-
-
-function CarregarStatus(id) {
-    //Buscar Situação Emprestimo
+    document.getElementById("AdicionarAssinante").style.marginBottom = "0%";
 }
 
 function CarregarAlterar(id) {
-    document.getElementById("AcaoID " + id).innerHTML = '<th scope="row" id="AltId">' + id + '</th>' + '<th> <input type="text" id="AltNome" value="" /> </th>' + '<th> <input type="text" id="AltDesc" value="" /> </th>' + '<th> <input type="text" id="AltPaginas" value="" /> </th>' + '<th> <button id="' + id + '" onclick="Cancelar(this.id)"> Cancelar </button> </th>' + '<th> <button> Salvar </button> </th>';
+    var Carregamento = "";
+    Carregamento = Carregamento + '<th scope="row" id="AltId">' + id + '</th> ';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltNome ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltCPF ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltRG ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltLogradouro ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltNumero ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltBairro ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltCEP ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltCidade ' + id + '"" value="" /> </th>';
+    Carregamento = Carregamento + '<select OnChange="CarregaCidades()" class="form-control" type="text" id="AltEstado ' + id + '" value=""> </select> </br>';
+    Carregamento = Carregamento + '<th> <button id="' + id + '" onclick="Cancelar(this.id)"> Cancelar </button> </th>' + '<th> <button id="' + id + '"onclick="AlterarSalvar(this.id)"> Salvar </button> </th>';
+
+    document.getElementById("AcaoID " + id).innerHTML = Carregamento;
+
+    document.getElementById("AltNome " + id).value = document.getElementById("Nome " + id).innerHTML;
+    document.getElementById("AltCPF " + id).value = document.getElementById("CPF " + id).innerHTML;
+    document.getElementById("AltRG " + id).value = document.getElementById("RG " + id).innerHTML;
+    document.getElementById("AltLogradouro " + id).value = document.getElementById("Logradouro " + id).innerHTML;
+    document.getElementById("AltNumero " + id).value = document.getElementById("Numero " + id).innerHTML;
+    document.getElementById("AltBairro " + id).value = document.getElementById("Bairro " + id).innerHTML;
+    document.getElementById("AltCEP " + id).value = document.getElementById("CEP " + id).innerHTML;
+    document.getElementById("AltCidade " + id).value = document.getElementById("Cidade " + id).innerHTML;
+    document.getElementById("AltEstado " + id).value = document.getElementById("Estado " + id).innerHTML;
+
+
+
+    $.getJSON('/estados_cidades.json', function (data) {
+
+        var options = '<option value="">escolha um estado</option>';
+        $.each(data, function (key, val) {
+            options += '<option value="' + val.nome + '">' + val.nome + '</option>';
+        });
+        var NameDiv = "#AltEstado " + id;
+        $(NameDiv).html(options);
+    });
+
 }
 
-function AlterarSalvar() {
+function AlterarSalvar(id) {
 
+    var Dados = {
+        ID: id,
+        Nome: document.getElementById("AltNome " + id).value,
+        CPF: document.getElementById("AltCPF " + id).value,
+        RG: document.getElementById("AltRG " + id).value,
+        IDEndereco: document.getElementById("IDEndereco " + id).innerHTML,
+        Logradouro: document.getElementById("AltLogradouro " + id).value,
+        Numero: document.getElementById("AltNumero " + id).value,
+        Bairro: document.getElementById("AltBairro " + id).value,
+        CEP: document.getElementById("AltCEP " + id).value,
+        Cidade: document.getElementById("AltCidade " + id).value,
+        Estado: document.getElementById("AltEstado " + id).value
+    }
+    $.get('/PlatBibliotecario/AlterarAssinante', Dados).done(function (result) {
+        alert(result.msg);
+        document.location.reload(true);
+    }).fail(function () {
+        Alert('erro', 'Ocorreu um erro');
+    });
 }
 
-function CarregarDeletar(id) {
-    //BuscarSituação emprestimo/reserva caso haja informar após , confirmação de Apagar
-}
 
-function DeletarConfirmar(id) {
-
+function DeletarAssinante(id) {
+    var Dados = {
+        ID: id,
+        IDEndereco: document.getElementById("IDEndereco " + id).innerHTML
+    }
+    $.get('/PlatBibliotecario/ApagarAssinante', Dados).done(function (result) {
+        alert(result.msg);
+        document.location.reload(true);
+    }).fail(function () {
+        Alert('erro', 'Ocorreu um erro');
+    });
 }
 
 function Cancelar(id) {
@@ -45,4 +180,3 @@ function Buscar() {
     var Pesquisa = document.getElementById("BuscaAssinante").value;
     window.location.href = "/PlatBibliotecario/CentralAssinantes?Pesquisa=" + Pesquisa
 }
-
