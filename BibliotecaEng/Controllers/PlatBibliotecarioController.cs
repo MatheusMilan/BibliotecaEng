@@ -282,75 +282,56 @@ namespace BibliotecaEng.Views.PlatBibliotecario
             return View();
         }
 
-        public IActionResult CadastroLivro(string Nome, string CPF, string RG, string Login, string Senha, string Logradouro, string Numero, string Bairro, string CEP, string Cidade, string Estado)
+        public IActionResult CadastroLivro(string Nome,string NomeOri,string Ano,string Paginas,string Estoque,string Desc,string Editora,string Autores)
         {
             bool ok = true;
             string sql = "";
             string msg = "";
-
+            MySqlDataReader Auxiliar;
+            string IdAutor="";
+            string IdEditora="";
             try
             {
                 Connect.Abrir();
-                sql = "insert into endereco (end_logradouro,end_numero,end_bairro,end_cep,end_cidade,end_estado) VALUES ('#1','#2','#3','#4','#5','#6')";
-                sql = sql.Replace("#1", Logradouro);
-                sql = sql.Replace("#2", Numero);
-                sql = sql.Replace("#3", Bairro);
-                sql = sql.Replace("#4", CEP);
-                sql = sql.Replace("#5", Cidade);
-                sql = sql.Replace("#6", Estado);
 
-                int IDEndereco = Connect.ExecutarNonQueryReturnID(sql);
-                if (IDEndereco != 0)
+                sql = "select aut_id from autor where aut_nome='"+Autores+"'";
+                Auxiliar = Connect.ExecutarSelect(sql);
+                
+                if(Auxiliar.Read())
+                    IdAutor = Auxiliar.GetString("aut_id");
+
+                Auxiliar.Close();
+
+                sql = "select edi_id from editora where edi_nome='" + Editora + "'";
+                Auxiliar = Connect.ExecutarSelect(sql);
+
+                if (Auxiliar.Read())
+                    IdEditora = Auxiliar.GetString("edi_id");
+
+                Auxiliar.Close();
+
+                sql = "insert into estoque (est_qtde) values (#1)";
+                sql = sql.Replace("#1", Estoque);
+                int IdEstoque=Connect.ExecutarNonQueryReturnID(sql);
+
+                sql = "insert into livro (liv_nome,liv_desc,liv_ativo,liv_paginas,liv_nome_original,liv_ano_publicacao,editora_edi_id,estoque_est_id) values ('#1','#2','#3','#4','#5','#6','#7','#8')";
+                sql = sql.Replace("#1", Nome);
+                sql = sql.Replace("#2", Desc);
+                sql = sql.Replace("#3","1");
+                sql = sql.Replace("#4", Paginas);
+                sql = sql.Replace("#5", NomeOri);
+                sql = sql.Replace("#6", Ano);
+                sql = sql.Replace("#7", IdEditora);
+                sql = sql.Replace("#8", IdEstoque.ToString());
+                int IdLivro = Connect.ExecutarNonQueryReturnID(sql);
+                if(IdLivro>0)
                 {
-                    sql = "insert into assinante_acesso (aa_login,aa_senha) values ('#1','#2')";
-                    sql = sql.Replace("#1", Login);
-                    sql = sql.Replace("#2", Senha);
-                    int IDAcesso = Connect.ExecutarNonQueryReturnID(sql);
-                    if (IDAcesso != 0)
-                    {
-                        sql = "insert into assinante (ass_nome,ass_cpf,ass_rg,ass_ativo,endereco_end_id,acesso_aa_id) values ('#1','#2','#3',#4,'#5','#6')";
-                        sql = sql.Replace("#1", Nome);
-                        sql = sql.Replace("#2", CPF);
-                        sql = sql.Replace("#3", RG);
-                        sql = sql.Replace("#4", "1");
-                        sql = sql.Replace("#5", IDEndereco.ToString());
-                        sql = sql.Replace("#6", IDAcesso.ToString());
-                        int IDAssinante = Connect.ExecutarNonQueryReturnID(sql);
-                        if (IDAssinante != 0)
-                        {
-                            msg = "Assinante Adicionado com Sucesso";
-                        }
-                        else
-                        {
-                            msg = "Erro ao Adicionar o Assinante";
-                            sql = "delete from endereco where end_id=" + IDEndereco;
-                            int ExclusaoErro = Connect.ExecutarNonQueryAffected(sql);
-                            if (ExclusaoErro == 0)
-                                msg = "Problema com o Banco de Dados, solicitar administrador";
-                            else
-                            {
-                                ExclusaoErro = 0;
-                                sql = "delete from aa where aa_id=" + IDAcesso;
-                                ExclusaoErro = Connect.ExecutarNonQueryAffected(sql);
-                                if (ExclusaoErro == 0)
-                                    msg = "Problema com o Banco de Dados, solicitar administrador";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        msg = "Erro ao Adicionar Acesso";
-                        sql = "delete from endereco where end_id=" + IDEndereco;
-                        int ExclusaoErro = Connect.ExecutarNonQueryAffected(sql);
-                        if (ExclusaoErro == 0)
-                            msg = "Problema com o Banco de Dados, solicitar administrador";
-                    }
+                    msg = "Ok";
                 }
                 else
                 {
-                    msg = "Erro ao Adicionar o Endereço";
+                    msg = "Problema ao Inserir o Livro";
                 }
-
             }
             catch (Exception)
             {
