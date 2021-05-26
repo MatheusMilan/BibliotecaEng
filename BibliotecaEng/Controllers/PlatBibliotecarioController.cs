@@ -326,7 +326,12 @@ namespace BibliotecaEng.Views.PlatBibliotecario
                 int IdLivro = Connect.ExecutarNonQueryReturnID(sql);
                 if(IdLivro>0)
                 {
-                    msg = "Ok";
+                    sql = "Insert into autor_livro (aut_id,liv_id,ativo) Values('#1',#2,1)";
+                    sql = sql.Replace("#1", IdAutor);
+                    sql = sql.Replace("#2", IdLivro.ToString());
+                    int Final = Connect.ExecutarNonQueryReturnID(sql);
+                    if(Final>0)
+                        msg = "Ok";
                 }
                 else
                 {
