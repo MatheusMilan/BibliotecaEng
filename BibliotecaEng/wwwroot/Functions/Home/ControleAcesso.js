@@ -21,7 +21,6 @@
             if (result) {
                 window.location.href = "/PlatUsuario/Index";
                 document.cookie = "AtivoID=" + result;
-                alert(result);
             }
             else
                 alert("Acesso Negado");

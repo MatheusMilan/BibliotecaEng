@@ -90,59 +90,58 @@ function CarregarAlterar(id) {
     var Carregamento = "";
     Carregamento = Carregamento + '<th scope="row" id="AltId">' + id + '</th> ';
     Carregamento = Carregamento + '<th> <input type="text" id="AltNome ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltDes ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltCNPJ ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltContato ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltLogradouro ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltNumero ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltBairro ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltCEP ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltCidade ' + id + '"" value="" /> </th>';
-    Carregamento = Carregamento + '<select OnChange="CarregaCidades()" class="form-control" type="text" id="AltEstado ' + id + '" value=""> </select> </br>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltNomeOri ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltAno ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltPaginas ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltDesc ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltEditora ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltAutor ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltEstoque ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <button id="' + id + '" onclick="Cancelar(this.id)"> Cancelar </button> </th>' + '<th> <button id="' + id + '"onclick="AlterarSalvar(this.id)"> Salvar </button> </th>';
 
     document.getElementById("AcaoID " + id).innerHTML = Carregamento;
 
     document.getElementById("AltNome " + id).value = document.getElementById("Nome " + id).innerHTML;
+    document.getElementById("AltNomeOri " + id).value = document.getElementById("NomeOri " + id).innerHTML;
+    document.getElementById("AltAno " + id).value = document.getElementById("Ano " + id).innerHTML;
+    document.getElementById("AltPaginas " + id).value = document.getElementById("Paginas " + id).innerHTML;
     document.getElementById("AltDesc " + id).value = document.getElementById("Desc " + id).innerHTML;
-    document.getElementById("AltCNPJ " + id).value = document.getElementById("CNPJ " + id).innerHTML;
-    document.getElementById("AltContato " + id).value = document.getElementById("Contato " + id).innerHTML;
-    document.getElementById("AltLogradouro " + id).value = document.getElementById("Logradouro " + id).innerHTML;
-    document.getElementById("AltNumero " + id).value = document.getElementById("Numero " + id).innerHTML;
-    document.getElementById("AltBairro " + id).value = document.getElementById("Bairro " + id).innerHTML;
-    document.getElementById("AltCEP " + id).value = document.getElementById("CEP " + id).innerHTML;
-    document.getElementById("AltEstado " + id).value = document.getElementById("Estado " + id).innerHTML;
-    document.getElementById("AltCidade " + id).value = document.getElementById("Cidade " + id).innerHTML;
+    document.getElementById("AltEditora " + id).value = document.getElementById("Editora " + id).innerHTML;
+    document.getElementById("AltAutor " + id).value = document.getElementById("Autor " + id).innerHTML;
+    document.getElementById("AltEstoque " + id).value = document.getElementById("Estoque " + id).innerHTML;
 
-
-
-    $.getJSON('/estados_cidades.json', function (data) {
-
-        var options = '<option value="">escolha um estado</option>';
-        $.each(data, function (key, val) {
-            options += '<option value="' + val.nome + '">' + val.nome + '</option>';
-        });
-        var NameDiv = "#AltEstado " + id;
-        $(NameDiv).html(options);
+    var x = "";
+    $.get("/PlatBibliotecario/AutoresDisponiveis", function (data) {
+        const obj = JSON.parse(data);
+        var options = "";
+        for (x in obj) {
+            options += '<option value="' + obj[x].aut__nome + '">' + obj[x].aut_nome + '</option>';
+        }
+        $("#AltAutor "+id).html(options);
     });
 
+    $.get("/PlatBibliotecario/EditorasDisponiveis", function (data) {
+        const obj = JSON.parse(data);
+        var options = "";
+        for (x in obj) {
+            options += '<option value="' + obj[x].edi_nome + '">' + obj[x].edi_nome + '</option>';
+        }
+        $("#AltEditora "+id).html(options);
+    });
 }
 
 function AlterarSalvar(id) {
 
     var Dados = {
         ID: id,
-        Nome: document.getElementById("AltNome " + id).value,
-        Desc: document.getElementById("AltDesc " + id).value,
-        CNPJ: document.getElementById("AltCNPJ " + id).value,
-        Contato: document.getElementById("AltContato " + id).value,
-        IDEndereco: document.getElementById("IDEndereco " + id).innerHTML,
-        Logradouro: document.getElementById("AltLogradouro " + id).value,
-        Numero: document.getElementById("AltNumero " + id).value,
-        Bairro: document.getElementById("AltBairro " + id).value,
-        CEP: document.getElementById("AltCEP " + id).value,
-        Cidade: document.getElementById("AltCidade " + id).value,
-        Estado: document.getElementById("AltEstado " + id).value,
+        Nome:document.getElementById("AltNome " + id).value,
+        NomeOri:document.getElementById("AltNomeOri " + id).value,
+        Ano:document.getElementById("AltAno " + id).value,
+        Paginas:document.getElementById("AltPaginas " + id).value,
+        Desc:document.getElementById("AltDesc " + id).value,
+        Editora:document.getElementById("AltEditora " + id).value,
+        Autor: document.getElementById("AltAutor " + id).value,
+        Estoque: document.getElementById("AltEstoque " + id).value,
     }
     $.get('/PlatBibliotecario/AlterarLivro', Dados).done(function (result) {
         alert(result.msg);
@@ -155,8 +154,7 @@ function AlterarSalvar(id) {
 
 function DeletarLivro(id) {
     var Dados = {
-        ID: id,
-        IDEndereco: document.getElementById("IDEndereco " + id).innerHTML
+        ID: id
     }
     $.get('/PlatBibliotecario/ApagarLivro', Dados).done(function (result) {
         alert(result.msg);
