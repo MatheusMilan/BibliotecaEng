@@ -3,7 +3,7 @@
     var Carregamento = "";
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Nome Assinante</label> <input class="form-control" type="text" id="AddNome" required value="" /> </br>';
+    Carregamento = Carregamento + '<label>Nome Assinante</label> <input class="form-control" type="text" required="" id="AddNome" value="" /> </br>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
     Carregamento = Carregamento + '<label>CPF Assinante</label>  <input class="form-control" type="text" required id="AddCPF" ' + 'onkeypress="$(this).mask(' + "'000.000.000-00'" + ')"' + 'value="" /> </br> ';

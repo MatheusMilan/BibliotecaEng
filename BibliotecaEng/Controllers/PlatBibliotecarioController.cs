@@ -515,6 +515,54 @@ namespace BibliotecaEng.Views.PlatBibliotecario
 
         }
 
+        public string AutoresDisponiveis()
+        {
+            string sql = "";
+            int ID;
+            MySqlDataReader Selecao;
+
+            try
+            {
+                Connect.Abrir();
+
+                sql = "SELECT * FROM Autor";
+                Selecao = Connect.ExecutarSelect(sql);
+
+                StringBuilder sb = new StringBuilder();
+                StringWriter sw = new StringWriter(sb);
+
+                using (JsonWriter jsonWriter = new JsonTextWriter(sw))
+                {
+                    jsonWriter.WriteStartArray();
+
+                    while (Selecao.Read())
+                    {
+                        jsonWriter.WriteStartObject();
+
+                        int fields = Selecao.FieldCount;
+
+                        for (int i = 0; i < fields; i++)
+                        {
+                            jsonWriter.WritePropertyName(Selecao.GetName(i));
+                            jsonWriter.WriteValue(Selecao[i]);
+                        }
+
+                        jsonWriter.WriteEndObject();
+                    }
+
+                    jsonWriter.WriteEndArray();
+
+                    return sw.ToString();
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         #endregion
         #region Autores
