@@ -59,6 +59,7 @@
                         <th scope="col">Nome Original</th>
                         <th scope="col">Ano Publicãcao</th>
                         <th scope="col">Editora</th>
+                        <th scope="col">Autor</th>
                         <th scope="col">Estoque</th>
                         <th scope="col">Ações</th>
                         <th scope="col">Ações</th>
@@ -68,18 +69,20 @@
                 <tbody>
                     @{ while (ViewBag.Livros.Read())
                         {
-                            <tr>
-                                <th scope="row">@ViewBag.Livros.GetString("liv_id")</th>
-                                <td>@ViewBag.Livros.GetString("liv_nome")</td>
-                                <td>@ViewBag.Livros.GetString("liv_desc")</td>
-                                <td>@ViewBag.Livros.GetString("liv_paginas")</td>
-                                <td>@ViewBag.Livros.GetString("liv_nome_original")</td>
-                                <td>@ViewBag.Livros.GetString("liv_ano_publicacao")</td>
-                                <!-- EDITORA COMO TRAZ-->
-                                <td><button id="@ViewBag.Livros.GetString("liv_id")">Status</button></td>
-                                <td><button id="@ViewBag.Livros.GetString("liv_id")" onclick="CarregarAlterar(this.id)">Alterar</button></td>
-                                <td><button id="@ViewBag.Livros.GetString("liv_id")">Deletar</button></td>
-                            </tr>
+                                        <tr>
+                                            <th scope="row">@ViewBag.Livros.GetString("liv_id")</th>
+                                            <td id="Nome @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("liv_nome")</td>
+                                            <td id="Desc @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("liv_desc")</td>
+                                            <td id="Paginas @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("liv_paginas")</td>
+                                            <td id="NomeOri @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("liv_nome_original")</td>
+                                            <td id="Ano @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("liv_ano_publicacao")</td>
+                                            <td id="Editora @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("edi_nome")</td>
+                                            <td id="Autor @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("aut_nome")</td>
+                                            <td id="Estoque @ViewBag.Livros.GetString("liv_id")">@ViewBag.Livros.GetString("est_qtde")</td>
+                                            <td><button id="@ViewBag.Livros.GetString("liv_id")">Status</button></td>
+                                            <td><button id="@ViewBag.Livros.GetString("liv_id")" onclick="CarregarAlterar(this.id)">Alterar</button></td>
+                                            <td><button id="@ViewBag.Livros.GetString("liv_id")">Deletar</button></td>
+                                        </tr>
                             <tr id="AcaoID @ViewBag.Livros.GetString("liv_id")">
                             </tr>
                         }

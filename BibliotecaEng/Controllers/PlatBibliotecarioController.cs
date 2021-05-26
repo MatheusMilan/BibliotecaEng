@@ -260,14 +260,14 @@ namespace BibliotecaEng.Views.PlatBibliotecario
             {
                 Connect.Abrir();
                 if(Pesquisa==null)
-                    sql = "Select * from livro";
+                    sql = "Select * from livro l inner join autor_livro al on al.liv_id = l.liv_id Inner join autor a on a.aut_id = al.aut_id Inner join editora e on e.edi_id = l.editora_edi_id Inner join estoque es on es.est_id = l.estoque_est_id";
                 else
                 {
                     bool IDTest = Int32.TryParse(Pesquisa,out ID);
                     if (IDTest)
-                        sql = "Select * from livro where liv_id=" + ID.ToString();
+                        sql = "Select * from livro l inner join autor_livro al on al.liv_id = l.liv_id Inner join autor a on a.aut_id = al.aut_id Inner join editora e on e.edi_id = l.editora_edi_id Inner join estoque es on es.est_id = l.estoque_est_id where l.liv_id=" + ID.ToString();
                     else
-                        sql = "Select * from livro where liv_nome='" + Pesquisa + "'";
+                        sql = "Select * from livro l inner join autor_livro al on al.liv_id = l.liv_id Inner join autor a on a.aut_id = al.aut_id Inner join editora e on e.edi_id = l.editora_edi_id Inner join estoque es on es.est_id = l.estoque_est_id where l.liv_nome='" + Pesquisa + "'";
 
                 }
                 MySqlDataReader Selecao = Connect.ExecutarSelect(sql);
