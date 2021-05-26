@@ -16,6 +16,9 @@
     Carregamento = Carregamento + "<div class='col'>"
     Carregamento = Carregamento + '<label>Paginas Livro</label>  <input class="form-control" type="text" required="" id="AddPaginas" value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>Estoque Livro</label>  <input class="form-control" type="text" required="" id="AddEstoque" value="" /> </br> ';
+    Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
@@ -24,8 +27,8 @@
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Livroes Livro</label </br>';
-    Carregamento = Carregamento + '<select class="form-control" type="text" id="AddAutor" required value="" /> </select>';
+    Carregamento = Carregamento + '<label>Autores Livro</label </br>';
+    Carregamento = Carregamento + '<select class="form-control" type="text" id="AddAutores" required value="" /> </select>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + '<label>Editora Livro</label> <select class="form-control" required="" type="text" id="AddEditora" value="" /> </select>';
@@ -40,9 +43,9 @@
         const obj = JSON.parse(data);
         var options = "";
         for (x in obj) {
-            options += '<option value="' + obj[x].aut__nome + '">' + obj[x].aut_nome + '</option>';
+            options += '<option value="' + obj[x].aut_nome + '">' + obj[x].aut_nome + '</option>';
         }
-        $("#AddLivro").html(options);
+        $("#AddAutores").html(options);
     });
 
     $.get("/PlatBibliotecario/EditorasDisponiveis", function (data) {
@@ -66,9 +69,10 @@ function SalvarNovo() {
         NomeOri: document.getElementById("AddNomeOri").value,
         Ano: document.getElementById("AddAno").value,
         Paginas: document.getElementById("AddPaginas").value,
+        Estoque: document.getElementById("AddEstoque").value,
         Desc: document.getElementById("AddDesc").value,
         Editora: document.getElementById("AddEditora").value,
-        Autores: document.getElementById("AddAutor").value,
+        Autores: document.getElementById("AddAutores").value,
     }
 
     $.get('/PlatBibliotecario/CadastroLivro', Dados).done(function (result) {
@@ -95,7 +99,7 @@ function CarregarAlterar(id) {
     Carregamento = Carregamento + '<th> <input type="text" id="AltPaginas ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltDesc ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltEditora ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltAutor ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltAutores ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltEstoque ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <button id="' + id + '" onclick="Cancelar(this.id)"> Cancelar </button> </th>' + '<th> <button id="' + id + '"onclick="AlterarSalvar(this.id)"> Salvar </button> </th>';
 
@@ -107,7 +111,7 @@ function CarregarAlterar(id) {
     document.getElementById("AltPaginas " + id).value = document.getElementById("Paginas " + id).innerHTML;
     document.getElementById("AltDesc " + id).value = document.getElementById("Desc " + id).innerHTML;
     document.getElementById("AltEditora " + id).value = document.getElementById("Editora " + id).innerHTML;
-    document.getElementById("AltAutor " + id).value = document.getElementById("Autor " + id).innerHTML;
+    document.getElementById("AltAutores " + id).value = document.getElementById("Autores " + id).innerHTML;
     document.getElementById("AltEstoque " + id).value = document.getElementById("Estoque " + id).innerHTML;
 
     var x = "";
@@ -117,7 +121,7 @@ function CarregarAlterar(id) {
         for (x in obj) {
             options += '<option value="' + obj[x].aut__nome + '">' + obj[x].aut_nome + '</option>';
         }
-        $("#AltAutor "+id).html(options);
+        $("#AltAutores "+id).html(options);
     });
 
     $.get("/PlatBibliotecario/EditorasDisponiveis", function (data) {
@@ -140,7 +144,7 @@ function AlterarSalvar(id) {
         Paginas:document.getElementById("AltPaginas " + id).value,
         Desc:document.getElementById("AltDesc " + id).value,
         Editora:document.getElementById("AltEditora " + id).value,
-        Autor: document.getElementById("AltAutor " + id).value,
+        Autores: document.getElementById("AltAutores " + id).value,
         Estoque: document.getElementById("AltEstoque " + id).value,
     }
     $.get('/PlatBibliotecario/AlterarLivro', Dados).done(function (result) {
