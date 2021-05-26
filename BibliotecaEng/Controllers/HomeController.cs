@@ -39,7 +39,7 @@ namespace BibliotecaEng.Controllers
             return View();
         }
 
-        public bool UsuarioLogin(string login, string senha)
+        public string UsuarioLogin(string login, string senha)
         {
             try
             {
@@ -47,25 +47,19 @@ namespace BibliotecaEng.Controllers
                 MySqlDataReader Selecao = Connect.ExecutarSelect("SELECT * FROM ASSINANTE_ACESSO WHERE AA_LOGIN='" + login + "' AND AA_SENHA='" + senha + "'");
                 if (Selecao.HasRows)
                 {
-                    //Logado
+                    Selecao.Read();
+                    return Selecao.GetString("aa_id");
                 }
-                else
-                {
-                    //Não logado
-                }
-
             }
             catch (Exception ex)
             {
-
                 throw;
             }
-
             Connect.Fechar();
-            return true;
+            return "";
         }
 
-        public bool BibliotecarioLogin(string login, string senha)
+        public string BibliotecarioLogin(string login, string senha)
         {
 
             try
@@ -74,22 +68,18 @@ namespace BibliotecaEng.Controllers
                 MySqlDataReader Selecao = Connect.ExecutarSelect("SELECT * FROM BIBLIOTECARIO_ACESSO WHERE BA_LOGIN='" + login + "' AND BA_SENHA='" + senha+"'");
                 if(Selecao.HasRows)
                 {
-                    //Logado
-                }
-                else
-                {
-                    //Não logado
+                    Selecao.Read();
+                    return Selecao.GetString("ba_id");
                 }
             }
             catch (Exception ex)
             {
-
                 throw;
             }
-
             Connect.Fechar();
-            return true;
+            return "";
         }
+
 
     }
 }

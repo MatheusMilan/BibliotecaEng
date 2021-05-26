@@ -11,10 +11,21 @@
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Descricao Livro</label>  <input class="form-control" type="text" id="AddDesc" ' + 'onkeypress="$(this).mask(' + "'00.000.000/0000-00'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Ano Publicação Livro</label>  <input class="form-control" type="text" id="AddAno" ' + 'onkeypress="$(this).mask(' + "'0000'" + ')"' + 'value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Paginas Livro</label>  <input class="form-control" type="text" id="AddPaginas" ' + ' onkeypress="$(this).mask(' + "'(00) 0000-00009'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Paginas Livro</label>  <input class="form-control" type="text" id="AddPaginas" value="" /> </br> ';
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "<div class='row'>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>Descricao Livro</label>  <input class="form-control" type="text" id="AddDesc" value="" /> </br> ';
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "</div>"
+    Carregamento = Carregamento + "<div class='row'>"
+    Carregamento = Carregamento + "<div class='col'>"
+    Carregamento = Carregamento + '<label>Livroes Livro</label </br>';
+    Carregamento = Carregamento + '<select class="form-control" type="text" id="AddAutor" value="" /> </select>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + '<label>Editora Livro</label> <select class="form-control" type="text" id="AddEditora" value="" /> </select>';
@@ -25,48 +36,39 @@
     document.getElementById("AdicionarLivro").style.marginBottom = "10%";
 
     var x="";
+    $.get("/PlatBibliotecario/AutoresDisponiveis", function (data) {
+        const obj = JSON.parse(data);
+        var options = "";
+        for (x in obj) {
+            options += '<option value="' + obj[x].aut__nome + '">' + obj[x].aut_nome + '</option>';
+        }
+        $("#AddLivro").html(options);
+    });
+
     $.get("/PlatBibliotecario/EditorasDisponiveis", function (data) {
         const obj = JSON.parse(data);
+        var options = "";
         for (x in obj) {
-            alert(obj[x].edi_id)
-            alert(obj[x].edi_nome)
+            options += '<option value="' + obj[x].edi_nome + '">' + obj[x].edi_nome + '</option>';
         }
+        $("#AddEditora").html(options);
     });
 }
 
-function CarregaCidades() {
-    $.getJSON('/estados_cidades.json', function (data) {
-        var options_cidades = '';
-        var str = "";
+function SalvarNovoLivro()
+{
 
-        $("#AddEstado option:selected").each(function () {
-            str += $(this).text();
-        });
-
-        $.each(data, function (key, val) {
-            if (val.nome == str) {
-                $.each(val.cidades, function (key_city, val_city) {
-                    options_cidades += '<option value="' + val_city + '">' + val_city + '</option>';
-                });
-            }
-        });
-
-        $("#AddCidade").html(options_cidades);
-    });
 }
 
 function SalvarNovo() {
     var Dados = {
         Nome: document.getElementById("AddNome").value,
+        NomeOri: document.getElementById("AddNomeOri").value,
+        Ano: document.getElementById("AddAno").value,
+        Paginas: document.getElementById("AddPaginas").value,
         Desc: document.getElementById("AddDesc").value,
-        CNPJ: document.getElementById("AddCNPJ").value,
-        Contato: document.getElementById("AddContato").value,
-        Logradouro: document.getElementById("AddLogradouro").value,
-        Numero: document.getElementById("AddNumero").value,
-        Bairro: document.getElementById("AddBairro").value,
-        CEP: document.getElementById("AddCEP").value,
-        Cidade: document.getElementById("AddCidade").value,
-        Estado: document.getElementById("AddEstado").value
+        Editora: document.getElementById("AddEditora").value,
+        Autores: document.getElementById("AddAutor").value,
     }
 
     $.get('/PlatBibliotecario/CadastroLivro', Dados).done(function (result) {
@@ -88,7 +90,7 @@ function CarregarAlterar(id) {
     var Carregamento = "";
     Carregamento = Carregamento + '<th scope="row" id="AltId">' + id + '</th> ';
     Carregamento = Carregamento + '<th> <input type="text" id="AltNome ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltDesc ' + id + '" value="" /> </th>';
+    Carregamento = Carregamento + '<th> <input type="text" id="AltDes ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltCNPJ ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltContato ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltLogradouro ' + id + '" value="" /> </th>';
