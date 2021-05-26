@@ -24,9 +24,13 @@
     document.getElementById("AdicionarLivro").innerHTML = Carregamento;
     document.getElementById("AdicionarLivro").style.marginBottom = "10%";
 
-    $.get("/PlatBibliotecario/", function (data) {
-        $(".result").html(data);
-        alert("Load was performed.");
+    var x="";
+    $.get("/PlatBibliotecario/EditorasDisponiveis", function (data) {
+        const obj = JSON.parse(data);
+        for (x in obj) {
+            alert(obj[x].edi_id)
+            alert(obj[x].edi_nome)
+        }
     });
 }
 

@@ -1,9 +1,14 @@
-﻿using BibliotecaEng.UtilBD;
+﻿using BibliotecaEng.Models;
+using BibliotecaEng.UtilBD;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BibliotecaEng.Views.PlatBibliotecario
@@ -461,7 +466,7 @@ namespace BibliotecaEng.Views.PlatBibliotecario
             });
         }
 
-        public IActionResult EditorasDisponiveis()
+        public String EditorasDisponiveis()
         {
             string sql = "";
             int ID; 
@@ -473,7 +478,34 @@ namespace BibliotecaEng.Views.PlatBibliotecario
 
                 sql = "SELECT * FROM editora";
                 Selecao = Connect.ExecutarSelect(sql);
-                ViewBag.Editoras = Selecao;
+
+                StringBuilder sb = new StringBuilder();
+                StringWriter sw = new StringWriter(sb);
+
+                using (JsonWriter jsonWriter = new JsonTextWriter(sw))
+                {
+                    jsonWriter.WriteStartArray();
+
+                    while (Selecao.Read())
+                    {
+                        jsonWriter.WriteStartObject();
+
+                        int fields = Selecao.FieldCount;
+
+                        for (int i = 0; i < fields; i++)
+                        {
+                            jsonWriter.WritePropertyName(Selecao.GetName(i));
+                            jsonWriter.WriteValue(Selecao[i]);
+                        }
+
+                        jsonWriter.WriteEndObject();
+                    }
+
+                    jsonWriter.WriteEndArray();
+
+                    return sw.ToString();
+                }
+
             }
             catch (Exception)
             {
@@ -481,10 +513,6 @@ namespace BibliotecaEng.Views.PlatBibliotecario
                 throw;
             }
 
-            return Json(new
-            {
-                Editoras = Selecao
-            });
         }
 
 
