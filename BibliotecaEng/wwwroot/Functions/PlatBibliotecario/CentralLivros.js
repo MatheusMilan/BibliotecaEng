@@ -1,41 +1,33 @@
-﻿function AdicionarEditora() {
-    document.getElementById("tabelaEditora").hidden = true;
+﻿function AdicionarLivro() {
+    document.getElementById("tabelaLivro").hidden = true;
     var Carregamento = "";
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Nome Editora</label> <input class="form-control" type="text" id="AddNome" value="" /> </br>';
+    Carregamento = Carregamento + '<label>Nome Livro</label> <input class="form-control" type="text" id="AddNome" value="" /> </br>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Descrição Editora</label> <input class="form-control" type="text" id="AddDesc" value="" /> </br>';
+    Carregamento = Carregamento + '<label>Nome Original Livro</label> <input class="form-control" type="text" id="AddNomeOri" value="" /> </br>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>CNPJ Editora</label>  <input class="form-control" type="text" id="AddCNPJ" ' + 'onkeypress="$(this).mask(' + "'00.000.000/0000-00'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Descricao Livro</label>  <input class="form-control" type="text" id="AddDesc" ' + 'onkeypress="$(this).mask(' + "'00.000.000/0000-00'" + ')"' + 'value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Contato Editora</label>  <input class="form-control" type="text" id="AddContato" ' + ' onkeypress="$(this).mask(' + "'(00) 0000-00009'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Paginas Livro</label>  <input class="form-control" type="text" id="AddPaginas" ' + ' onkeypress="$(this).mask(' + "'(00) 0000-00009'" + ')"' + 'value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
-    Carregamento = Carregamento + '<label>Logradouro Editora</label> <input class="form-control" type="text" id="AddLogradouro" value="" /> </br> ';
-    Carregamento = Carregamento + '<label>Numero Editora</label> <input class="form-control" type="text" id="AddNumero" value="" /> </br> ';
-    Carregamento = Carregamento + '<label>Bairro Editora</label> <input class="form-control" type="text" id="AddBairro" value="" /> </br> ';
-    Carregamento = Carregamento + '<label>CEP Editora</label> <input class="form-control" type="text" id="AddCEP" ' + ' onkeypress = "$(this).mask(' + "'00.000-000'" + ')"' + ' value="" /> </br> ';
-    Carregamento = Carregamento + '<label>Estado Editora</label> <select OnChange="CarregaCidades()" class="form-control" type="text" id="AddEstado" value=""> </select> </br>';
-    Carregamento = Carregamento + '<label>Cidade Editora</label> <select class="form-control" type="text" id="AddCidade" value="" /> </select>';
-    Carregamento = Carregamento + '</br> <button onclick="CancelarAddEditora()"> Cancelar </button>' + ' <button onclick="SalvarNovo()"> Salvar </button>';
+    Carregamento = Carregamento + '<label>Editora Livro</label> <select class="form-control" type="text" id="AddEditora" value="" /> </select>';
+    Carregamento = Carregamento + '</br> <button onclick="CancelarAddLivro()"> Cancelar </button>' + ' <button onclick="SalvarNovo()"> Salvar </button>';
 
-    $.getJSON('/estados_cidades.json', function (data) {
 
-        var options = '<option value="">escolha um estado</option>';
-        $.each(data, function (key, val) {
-            options += '<option value="' + val.nome + '">' + val.nome + '</option>';
-        });
-        $("#AddEstado").html(options);
+    document.getElementById("AdicionarLivro").innerHTML = Carregamento;
+    document.getElementById("AdicionarLivro").style.marginBottom = "10%";
+
+    $.get("/PlatBibliotecario/", function (data) {
+        $(".result").html(data);
+        alert("Load was performed.");
     });
-
-    document.getElementById("AdicionarEditora").innerHTML = Carregamento;
-    document.getElementById("AdicionarEditora").style.marginBottom = "10%";
 }
 
 function CarregaCidades() {
@@ -73,19 +65,19 @@ function SalvarNovo() {
         Estado: document.getElementById("AddEstado").value
     }
 
-    $.get('/PlatBibliotecario/CadastroEditora', Dados).done(function (result) {
+    $.get('/PlatBibliotecario/CadastroLivro', Dados).done(function (result) {
         alert(result.msg);
         document.location.reload(true);
     }).fail(function () {
         Alert('erro', 'Ocorreu um erro');
     });
-    document.getElementById("AdicionarEditora").style.marginBottom = "0%";
+    document.getElementById("AdicionarLivro").style.marginBottom = "0%";
 }
 
-function CancelarAddEditora() {
-    document.getElementById("tabelaEditora").hidden = false;
-    document.getElementById("AdicionarEditora").innerHTML = "";
-    document.getElementById("AdicionarEditora").style.marginBottom = "0%";
+function CancelarAddLivro() {
+    document.getElementById("tabelaLivro").hidden = false;
+    document.getElementById("AdicionarLivro").innerHTML = "";
+    document.getElementById("AdicionarLivro").style.marginBottom = "0%";
 }
 
 function CarregarAlterar(id) {
@@ -146,7 +138,7 @@ function AlterarSalvar(id) {
         Cidade: document.getElementById("AltCidade " + id).value,
         Estado: document.getElementById("AltEstado " + id).value,
     }
-    $.get('/PlatBibliotecario/AlterarEditora', Dados).done(function (result) {
+    $.get('/PlatBibliotecario/AlterarLivro', Dados).done(function (result) {
         alert(result.msg);
         document.location.reload(true);
     }).fail(function () {
@@ -155,12 +147,12 @@ function AlterarSalvar(id) {
 }
 
 
-function DeletarEditora(id) {
+function DeletarLivro(id) {
     var Dados = {
         ID: id,
         IDEndereco: document.getElementById("IDEndereco " + id).innerHTML
     }
-    $.get('/PlatBibliotecario/ApagarEditora', Dados).done(function (result) {
+    $.get('/PlatBibliotecario/ApagarLivro', Dados).done(function (result) {
         alert(result.msg);
         document.location.reload(true);
     }).fail(function () {
@@ -173,7 +165,7 @@ function Cancelar(id) {
 }
 
 function Buscar() {
-    $("#tabelaEditora tr").remove();
-    var Pesquisa = document.getElementById("BuscaEditora").value;
-    window.location.href = "/PlatBibliotecario/CentralEditoras?Pesquisa=" + Pesquisa
+    $("#tabelaLivro tr").remove();
+    var Pesquisa = document.getElementById("BuscaLivro").value;
+    window.location.href = "/PlatBibliotecario/CentralLivros?Pesquisa=" + Pesquisa
 }

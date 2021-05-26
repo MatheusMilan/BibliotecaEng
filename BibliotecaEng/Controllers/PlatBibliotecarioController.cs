@@ -276,6 +276,218 @@ namespace BibliotecaEng.Views.PlatBibliotecario
 
             return View();
         }
+
+        public IActionResult CadastroLivro(string Nome, string CPF, string RG, string Login, string Senha, string Logradouro, string Numero, string Bairro, string CEP, string Cidade, string Estado)
+        {
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+
+            try
+            {
+                Connect.Abrir();
+                sql = "insert into endereco (end_logradouro,end_numero,end_bairro,end_cep,end_cidade,end_estado) VALUES ('#1','#2','#3','#4','#5','#6')";
+                sql = sql.Replace("#1", Logradouro);
+                sql = sql.Replace("#2", Numero);
+                sql = sql.Replace("#3", Bairro);
+                sql = sql.Replace("#4", CEP);
+                sql = sql.Replace("#5", Cidade);
+                sql = sql.Replace("#6", Estado);
+
+                int IDEndereco = Connect.ExecutarNonQueryReturnID(sql);
+                if (IDEndereco != 0)
+                {
+                    sql = "insert into assinante_acesso (aa_login,aa_senha) values ('#1','#2')";
+                    sql = sql.Replace("#1", Login);
+                    sql = sql.Replace("#2", Senha);
+                    int IDAcesso = Connect.ExecutarNonQueryReturnID(sql);
+                    if (IDAcesso != 0)
+                    {
+                        sql = "insert into assinante (ass_nome,ass_cpf,ass_rg,ass_ativo,endereco_end_id,acesso_aa_id) values ('#1','#2','#3',#4,'#5','#6')";
+                        sql = sql.Replace("#1", Nome);
+                        sql = sql.Replace("#2", CPF);
+                        sql = sql.Replace("#3", RG);
+                        sql = sql.Replace("#4", "1");
+                        sql = sql.Replace("#5", IDEndereco.ToString());
+                        sql = sql.Replace("#6", IDAcesso.ToString());
+                        int IDAssinante = Connect.ExecutarNonQueryReturnID(sql);
+                        if (IDAssinante != 0)
+                        {
+                            msg = "Assinante Adicionado com Sucesso";
+                        }
+                        else
+                        {
+                            msg = "Erro ao Adicionar o Assinante";
+                            sql = "delete from endereco where end_id=" + IDEndereco;
+                            int ExclusaoErro = Connect.ExecutarNonQueryAffected(sql);
+                            if (ExclusaoErro == 0)
+                                msg = "Problema com o Banco de Dados, solicitar administrador";
+                            else
+                            {
+                                ExclusaoErro = 0;
+                                sql = "delete from aa where aa_id=" + IDAcesso;
+                                ExclusaoErro = Connect.ExecutarNonQueryAffected(sql);
+                                if (ExclusaoErro == 0)
+                                    msg = "Problema com o Banco de Dados, solicitar administrador";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        msg = "Erro ao Adicionar Acesso";
+                        sql = "delete from endereco where end_id=" + IDEndereco;
+                        int ExclusaoErro = Connect.ExecutarNonQueryAffected(sql);
+                        if (ExclusaoErro == 0)
+                            msg = "Problema com o Banco de Dados, solicitar administrador";
+                    }
+                }
+                else
+                {
+                    msg = "Erro ao Adicionar o Endereço";
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            Connect.Fechar();
+            return Json(new
+            {
+                Ok = ok,
+                msg = msg
+            });
+        }
+
+        public IActionResult AlterarLivro(string ID, string Nome, string CPF, string RG, string IDEndereco, string Logradouro, string Numero, string Bairro, string CEP, string Cidade, string Estado)
+        {
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+            int Affected = 0;
+            try
+            {
+                Connect.Abrir();
+                sql = "update assinante set ass_nome='#1',ass_cpf='#2',ass_rg='#3' where ass_id=#4";
+                sql = sql.Replace("#1", Nome);
+                sql = sql.Replace("#2", CPF);
+                sql = sql.Replace("#3", RG);
+                sql = sql.Replace("#4", ID.ToString());
+
+                Affected = Connect.ExecutarNonQueryAffected(sql);
+                if (Affected > 0)
+                {
+                    Affected = 0;
+                    sql = "update endereco set end_logradouro='#1',end_numero='#2',end_bairro='#3',end_cep='#4',end_cidade='#5',end_estado='#6' where end_id=#7";
+                    sql = sql.Replace("#1", Logradouro);
+                    sql = sql.Replace("#2", Numero);
+                    sql = sql.Replace("#3", Bairro);
+                    sql = sql.Replace("#4", CEP);
+                    sql = sql.Replace("#5", Cidade);
+                    sql = sql.Replace("#6", Estado);
+                    sql = sql.Replace("#7", IDEndereco.ToString());
+                    Affected = Connect.ExecutarNonQueryAffected(sql);
+                    if (Affected > 0)
+                    {
+                        msg = "Alteração Concluida";
+                    }
+                    else
+                    {
+                        ok = false;
+                        msg = "Erro ao Atualizar Endereço Assinante";
+                    }
+                }
+                else
+                {
+                    ok = false;
+                    msg = "Erro ao Atualizar Assinante";
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            Connect.Fechar();
+            return Json(new
+            {
+                Ok = ok,
+                msg = msg
+            });
+        }
+
+        public IActionResult ApagarLivro(string ID, string IDEndereco)
+        {
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+
+            try
+            {
+                Connect.Abrir();
+                sql = "delete from assinante where ass_id=" + ID;
+                if (Connect.ExecutarNonQueryAffected(sql) > 0)
+                {
+                    sql = "delete from endereco where end_id=" + IDEndereco;
+                    if (Connect.ExecutarNonQueryAffected(sql) > 0)
+                        msg = "Registro Removido";
+                    else
+                    {
+                        ok = false;
+                        msg = "Erro ao Apagar o Registro";
+                    }
+
+                }
+                else
+                {
+                    ok = false;
+                    msg = "Erro ao Apagar Assinante";
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return Json(new
+            {
+                Ok = ok,
+                msg = msg
+            });
+        }
+
+        public IActionResult EditorasDisponiveis()
+        {
+            string sql = "";
+            int ID; 
+            MySqlDataReader Selecao;
+
+            try
+            {
+                Connect.Abrir();
+
+                sql = "SELECT * FROM editora";
+                Selecao = Connect.ExecutarSelect(sql);
+                ViewBag.Editoras = Selecao;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return Json(new
+            {
+                Editoras = Selecao
+            });
+        }
+
+
         #endregion
         #region Autores
         public IActionResult CentralAutores(string Pesquisa)

@@ -59,6 +59,28 @@ function CarregaCidades() {
     });
 }
 
+function CarregaCidadesAlt(id) {
+    $.getJSON('/estados_cidades.json', function (data) {
+        var options_cidades = '';
+        var str = "";
+
+        $("#" +id+ " option:selected").each(function () {
+            str += $(this).text();
+        });
+
+        $.each(data, function (key, val) {
+            if (val.nome == str) {
+                $.each(val.cidades, function (key_city, val_city) {
+                    options_cidades += '<option value="' + val_city + '">' + val_city + '</option>';
+                });
+            }
+        });
+        var Div = id.replace("AltEstado", "AltCidade");
+
+        $("#"+Div).html(options_cidades);
+    });
+}
+
 function SalvarNovo() {
     var Dados = {
         Nome: document.getElementById("AddNome").value,
@@ -99,22 +121,22 @@ function CarregarAlterar(id) {
     Carregamento = Carregamento + '<th> <input type="text" id="AltNumero ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltBairro ' + id + '" value="" /> </th>';
     Carregamento = Carregamento + '<th> <input type="text" id="AltCEP ' + id + '" value="" /> </th>';
-    Carregamento = Carregamento + '<th> <input type="text" id="AltCidade ' + id + '"" value="" /> </th>';
-    Carregamento = Carregamento + '<select OnChange="CarregaCidades()" class="form-control" type="text" id="AltEstado'+ id + '" value=""> </select> </br>';
-    Carregamento = Carregamento + '<th> <button id="' + id + '" onclick="Cancelar(this.id)"> Cancelar </button> </th>' + '<th> <button id="' + id +'"onclick="AlterarSalvar(this.id)"> Salvar </button> </th>';
+    Carregamento = Carregamento + '<select OnChange="CarregaCidadesAlt(this.id)" class="form-control" type="text" id="AltEstado' + id + '" value=""> </select> </br>';
+    Carregamento = Carregamento + '<th> <select type="text" class="form-control" id="AltCidade' + id + '"" value="" /> </select> </th>';
+    Carregamento = Carregamento + '<th> <button id="' + id + '" onclick="Cancelar(this.id)"> Cancelar </button> </th>' + '<th> <button id="' + id + '"onclick="AlterarSalvar(this.id)"> Salvar </button> </th>';
 
     document.getElementById("AcaoID " + id).innerHTML = Carregamento;
 
-    document.getElementById("AltNome "+id).value = document.getElementById("Nome " + id).innerHTML;
-    document.getElementById("AltDesc "+ id).value = document.getElementById("Desc " + id).innerHTML;
-    document.getElementById("AltCNPJ "+ id).value = document.getElementById("CNPJ " + id).innerHTML;
+    document.getElementById("AltNome " + id).value = document.getElementById("Nome " + id).innerHTML;
+    document.getElementById("AltDesc " + id).value = document.getElementById("Desc " + id).innerHTML;
+    document.getElementById("AltCNPJ " + id).value = document.getElementById("CNPJ " + id).innerHTML;
     document.getElementById("AltContato " + id).value = document.getElementById("Contato " + id).innerHTML;
     document.getElementById("AltLogradouro " + id).value = document.getElementById("Logradouro " + id).innerHTML;
     document.getElementById("AltNumero " + id).value = document.getElementById("Numero " + id).innerHTML;
     document.getElementById("AltBairro " + id).value = document.getElementById("Bairro " + id).innerHTML;
     document.getElementById("AltCEP " + id).value = document.getElementById("CEP " + id).innerHTML;
     document.getElementById("AltEstado" + id).value = document.getElementById("Estado " + id).innerHTML;
-    document.getElementById("AltCidade " + id).value = document.getElementById("Cidade " + id).innerHTML;
+    document.getElementById("AltCidade" + id).value = document.getElementById("Cidade " + id).innerHTML;
 
     var estadoValor = document.getElementById("Estado " + id).innerHTML;
 
@@ -131,6 +153,25 @@ function CarregarAlterar(id) {
         $(NameDiv).html(options);
     });
 
+    var estadoValorCidade = document.getElementById("Cidade " + id).innerHTML;
+
+    $.getJSON('/estados_cidades.json', function (data) {
+        var options_cidades = '';
+        var str = estadoValor;
+
+        $.each(data, function (key, val) {
+            if (val.nome == estadoValor) {
+                $.each(val.cidades, function (key_city, val_city) {
+                    options_cidades += '<option value="' + val_city;
+                    if (val_city == estadoValorCidade)
+                        options_cidades += 'selected';
+                    options_cidades +='">' + val_city + '</option>';
+                });
+            }
+        });
+        var NameDiv = "#AltCidade" + id;
+        $(NameDiv).html(options_cidades);
+    });
 }
 
 function AlterarSalvar(id) {
