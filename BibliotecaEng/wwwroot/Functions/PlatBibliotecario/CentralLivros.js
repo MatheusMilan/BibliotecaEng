@@ -3,21 +3,21 @@
     var Carregamento = "";
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Nome Livro</label> <input class="form-control" type="text" id="AddNome" value="" /> </br>';
+    Carregamento = Carregamento + '<label>Nome Livro</label> <input class="form-control" required type="text" id="AddNome" value="" /> </br>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Nome Original Livro</label> <input class="form-control" type="text" id="AddNomeOri" value="" /> </br>';
+    Carregamento = Carregamento + '<label>Nome Original Livro</label> <input class="form-control" required type="text" id="AddNomeOri" value="" /> </br>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Descricao Livro</label>  <input class="form-control" type="text" id="AddDesc" ' + 'onkeypress="$(this).mask(' + "'00.000.000/0000-00'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Descricao Livro</label>  <input class="form-control" type="text" required id="AddDesc" ' + 'onkeypress="$(this).mask(' + "'00.000.000/0000-00'" + ')"' + 'value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Paginas Livro</label>  <input class="form-control" type="text" id="AddPaginas" ' + ' onkeypress="$(this).mask(' + "'(00) 0000-00009'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Paginas Livro</label>  <input class="form-control" type="text" required id="AddPaginas" ' + ' onkeypress="$(this).mask(' + "'(00) 0000-00009'" + ')"' + 'value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
-    Carregamento = Carregamento + '<label>Editora Livro</label> <select class="form-control" type="text" id="AddEditora" value="" /> </select>';
+    Carregamento = Carregamento + '<label>Editora Livro</label> <select class="form-control" type="text" required id="AddEditora" value="" /> </select>';
     Carregamento = Carregamento + '</br> <button onclick="CancelarAddLivro()"> Cancelar </button>' + ' <button onclick="SalvarNovo()"> Salvar </button>';
 
 

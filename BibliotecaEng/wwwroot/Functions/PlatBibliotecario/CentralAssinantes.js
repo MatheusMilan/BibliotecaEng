@@ -3,31 +3,31 @@
     var Carregamento = "";
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Nome Assinante</label> <input class="form-control" type="text" id="AddNome" value="" /> </br>';
+    Carregamento = Carregamento + '<label>Nome Assinante</label> <input class="form-control" type="text" id="AddNome" required value="" /> </br>';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>CPF Assinante</label>  <input class="form-control" type="text" id="AddCPF" ' + 'onkeypress="$(this).mask(' + "'000.000.000-00'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>CPF Assinante</label>  <input class="form-control" type="text" required id="AddCPF" ' + 'onkeypress="$(this).mask(' + "'000.000.000-00'" + ')"' + 'value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>RG Assinante</label>  <input class="form-control" type="text" id="AddRG" ' + ' onkeypress="$(this).mask(' + "'00.000.000-0'" + ')"' + 'value="" /> </br> ';
+    Carregamento = Carregamento + '<label>RG Assinante</label>  <input class="form-control" required type="text" id="AddRG" ' + ' onkeypress="$(this).mask(' + "'00.000.000-0'" + ')"' + 'value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='row'>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Login Assinante</label>  <input class="form-control" type="text" id="AddLogin" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Login Assinante</label>  <input class="form-control" required type="text" id="AddLogin" value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "<div class='col'>"
-    Carregamento = Carregamento + '<label>Senha Assinante</label>  <input class="form-control" type="text" id="AddSenha" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Senha Assinante</label>  <input class="form-control" required type="text" id="AddSenha" value="" /> </br> ';
     Carregamento = Carregamento + "</div>"
     Carregamento = Carregamento + "</div>"
-    Carregamento = Carregamento + '<label>Logradouro Assinante</label> <input class="form-control" type="text" id="AddLogradouro" value="" /> </br> ';
-    Carregamento = Carregamento + '<label>Numero Assinante</label> <input class="form-control" type="text" id="AddNumero" value="" /> </br> ';
-    Carregamento = Carregamento + '<label>Bairro Assinante</label> <input class="form-control" type="text" id="AddBairro" value="" /> </br> ';
-    Carregamento = Carregamento + '<label>CEP Assinante</label> <input class="form-control" type="text" id="AddCEP" ' + ' onkeypress = "$(this).mask(' + "'00.000-000'" + ')"' + ' value="" /> </br> ';
-    Carregamento = Carregamento + '<label>Estado Assinante</label> <select OnChange="CarregaCidades()" class="form-control" type="text" id="AddEstado" value=""> </select> </br>';
-    Carregamento = Carregamento + '<label>Cidade Assinante</label> <select class="form-control" type="text" id="AddCidade" value="" /> </select>';
+    Carregamento = Carregamento + '<label>Logradouro Assinante</label> <input class="form-control" required type="text" id="AddLogradouro" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Numero Assinante</label> <input class="form-control" required type="text" id="AddNumero" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Bairro Assinante</label> <input class="form-control" required type="text" id="AddBairro" value="" /> </br> ';
+    Carregamento = Carregamento + '<label>CEP Assinante</label> <input class="form-control" required type="text" required id="AddCEP" ' + ' onkeypress = "$(this).mask(' + "'00.000-000'" + ')"' + ' value="" /> </br> ';
+    Carregamento = Carregamento + '<label>Estado Assinante</label> <select OnChange="CarregaCidades()" class="form-control" type="text" required id="AddEstado" value=""> </select> </br>';
+    Carregamento = Carregamento + '<label>Cidade Assinante</label> <select class="form-control" type="text" id="AddCidade" value="" required /> </select>';
     Carregamento = Carregamento + '</br> <button onclick="CancelarAddAssinante()"> Cancelar </button>' + ' <button onclick="SalvarNovo()"> Salvar </button>';
 
     $.getJSON('/estados_cidades.json', function (data) {
