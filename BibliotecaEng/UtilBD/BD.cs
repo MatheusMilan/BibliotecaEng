@@ -18,7 +18,7 @@ namespace BibliotecaEng.UtilBD
 
         public BD()
         {
-            string strCon = "Server=den1.mysql2.gear.host;Database=es2g6h;Uid=es2g6h;Pwd=Bibliotec@";
+            string strCon = "Server=den1.mysql2.gear.host;Database=es2g6h;Uid=es2g6h;Pwd=Bibliotec@;";
 
             _conexao = new MySqlConnection(strCon);
             _cmd = _conexao.CreateCommand();

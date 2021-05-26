@@ -307,6 +307,123 @@ namespace BibliotecaEng.Views.PlatBibliotecario
             }
             return View();
         }
+
+        public IActionResult CadastroAutor(string Nome, string Desc, string DataNasc, string Cidade, string Pais)
+        {
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+
+            try
+            {
+                Connect.Abrir();
+                sql = "insert into autor (aut_nome,aut_descricao,aut_nascimento,aut_cidade,aut_pais) VALUES ('#1','#2','#3','#4','#5')";
+                sql = sql.Replace("#1", Nome);
+                sql = sql.Replace("#2", Desc);
+                sql = sql.Replace("#3", DataNasc);
+                sql = sql.Replace("#4", Cidade);
+                sql = sql.Replace("#5", Pais);
+
+                int IDAutor = Connect.ExecutarNonQueryReturnID(sql);
+                if (IDAutor != 0)
+                {
+                    msg = "Autor Adicionado";
+                }
+                else
+                {
+                    msg = "Erro ao Adicionar o Autor";
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            Connect.Fechar();
+            return Json(new
+            {
+                Ok = ok,
+                msg = msg
+            });
+        }
+
+        public IActionResult AlterarAutor(string ID,string Nome, string Desc, string DataNasc, string Cidade, string Pais)
+        {
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+            int Affected = 0;
+            try
+            {
+                Connect.Abrir();
+                sql = "update autor set aut_nome='#1',aut_descricao='#2',aut_nascimento='#3',aut_cidade='#4',aut_pais='#5' where aut_id=#6";
+                sql = sql.Replace("#1", Nome);
+                sql = sql.Replace("#2", Desc);
+                sql = sql.Replace("#3", DataNasc);
+                sql = sql.Replace("#4", Cidade);
+                sql = sql.Replace("#5", Pais);
+                sql = sql.Replace("#6", ID.ToString());
+
+                Affected = Connect.ExecutarNonQueryAffected(sql);
+                if (Affected > 0)
+                {
+                    msg = "Alteração Concluida";
+                }
+                else
+                {
+                    ok = false;
+                    msg = "Erro ao Atualizar Autor";
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            Connect.Fechar();
+            return Json(new
+            {
+                Ok = ok,
+                msg = msg
+            });
+        }
+
+        public IActionResult ApagarAutor(string ID)
+        {
+            bool ok = true;
+            string sql = "";
+            string msg = "";
+
+            try
+            {
+                Connect.Abrir();
+                sql = "delete from autor where aut_id=" + ID;
+                if (Connect.ExecutarNonQueryAffected(sql) > 0)
+                {
+                    msg = "Registro Removido";
+                }
+                else
+                {
+                    ok = false;
+                    msg = "Erro ao Apagar Autor";
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return Json(new
+            {
+                Ok = ok,
+                msg = msg
+            });
+        }
         #endregion
         #region Editora
         public IActionResult CentralEditoras(string Pesquisa)
